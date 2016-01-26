@@ -1,0 +1,141 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!-- Automatically converted from Rhino 5.0 -->
+
+<scene version="0.5.0">
+    <dpt>
+        <string name="integrator" value="mcmc"/>
+        <boolean name="bidirectional" value="true"/>
+        <integer name="spp" value="256"/>
+        <integer name="numinitsamples" value="100000"/>
+        <float name="largestepprob" value="0.5"/>
+        <integer name="mindepth" value="-1"/>
+        <integer name="maxdepth" value="8"/>
+        <integer name="directspp" value="256"/>
+        <boolean name="h2mc" value="true"/>
+        <float name="perturbstddev" value="0.01"/>
+        <float name="lensperturbstddev" value="0.02"/>
+        <float name="roughnessthreshold" value="0.01"/>
+        <float name="lensperturbprob" value="0.5"/>
+        <integer name="numchains" value="128"/>
+        <integer name="seedoffset" value="0"/>
+        <integer name="reportintervalspp" value="0"/>
+        <boolean name="uselightcoordinatesampling" value="true"/>
+        <boolean name="largestepmultiplexed" value="false"/>
+    </dpt>
+
+    <integrator type="mlt">
+        <boolean name="causticPerturbation" value="false"/>
+        <integer name="directSamples" value="0"/>
+        <boolean name="lensPerturbation" value="false"/>
+        <boolean name="manifoldPerturbation" value="true"/>
+        <integer name="maxDepth" value="8"/>
+        <boolean name="multiChainPerturbation" value="false"/>
+    </integrator>
+
+    <bsdf type="diffuse" id="mat_donut">
+        <rgb name="reflectance" value=".8,.8,.4"/>
+    </bsdf>
+
+    <bsdf type="phong" id="mat_metal">
+        <rgb name="diffuseReflectance" value="0,0,0"/>
+        <rgb name="specularReflectance" value=".8,.8,.8"/>
+        <float name="exponent" value="100"/>
+    </bsdf>
+
+    <texture type="bitmap" id="checker_board">
+        <string name="filename" value="checker.png"/>
+        <float name="uvscale" value="100"/>
+    </texture>
+
+    <bsdf type="phong" id="mat_floor">
+        <ref name="diffuseReflectance" id="checker_board"/>
+        <rgb name="specularReflectance" value=".45,.45,.45"/>
+        <float name="exponent" value="200"/>
+    </bsdf>
+
+    <bsdf type="roughdielectric" id="mat_glass">
+        <!-- Rhino object 'Glass' -->
+        <float name="intIOR" value="1.5"/>
+        <float name="extIOR" value="1.0"/>
+        <float name="alpha" value="0.05"/>
+        <boolean name="sampleVisible" value="false"/>
+    </bsdf>
+
+    <!--emitter type="point">
+        <point name="position" x="50" y="50" z="50"/>
+        <spectrum name="intensity" value="10000, 10000, 10000"/>
+    </emitter-->
+
+    <emitter type="envmap">
+        <transform name="toWorld">
+            <rotate y="1" angle="-30"/>
+            <rotate x="1" angle="90"/>
+        </transform>
+        <string name="filename" value="sunsky.exr"/>
+    </emitter>
+
+    <shape type="serialized">
+        <string name="filename" value="meshes.serialized"/>
+        <integer name="shapeIndex" value="1"/>
+        <transform name="toWorld">
+            <scale x="2.0" y="2.0"/>
+            <translate y="20"/>
+        </transform>
+
+        <ref id="mat_floor"/>
+    </shape>
+
+    <shape type="serialized">
+        <string name="filename" value="meshes.serialized"/>
+        <integer name="shapeIndex" value="2"/>
+
+        <ref id="mat_donut"/>
+    </shape>
+
+    <shape type="serialized">
+        <string name="filename" value="meshes.serialized"/>
+        <integer name="shapeIndex" value="3"/>
+
+        <ref id="mat_glass"/>
+    </shape>
+
+    <shape type="serialized">
+        <string name="filename" value="meshes.serialized"/>
+        <integer name="shapeIndex" value="4"/>
+
+        <ref id="mat_metal"/>
+    </shape>
+
+    <shape type="serialized">
+        <string name="filename" value="meshes.serialized"/>
+        <integer name="shapeIndex" value="5"/>
+
+        <ref id="mat_metal"/>
+    </shape>
+
+    <sensor type="perspective">
+        <float name="farClip" value="1165.89"/>
+        <float name="focusDistance" value="40.8694"/>
+        <float name="fov" value="34.6222"/>
+        <string name="fovAxis" value="x"/>
+        <float name="nearClip" value="0.00582945"/>
+        <float name="shutterOpen" value="0.0"/>
+        <float name="shutterClose" value="1.0"/>
+        <transform name="toWorld">
+            <lookat target="-23.7753, -37.4261, 29.4905" origin="-24.173, -38.184, 30.0076" up="0.261433, 0.446628, 0.855673"/>
+        </transform>
+
+        <sampler type="independent">
+            <integer name="sampleCount" value="64"/>
+        </sampler>
+
+        <film type="hdrfilm">
+            <boolean name="banner" value="false"/>
+            <integer name="height" value="768"/>
+            <integer name="width" value="1024"/>
+            <string name="filename" value="torus.exr"/>
+
+            <rfilter type="box"/>
+        </film>
+    </sensor>
+</scene>

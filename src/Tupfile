@@ -1,0 +1,24 @@
+# Change the following to your own path
+# Eigen 3.3-beta1
+EIGEN_INCLUDE   = -I../eigen
+# OIIO 1.7
+OIIO_INCLUDE    = -I../oiio/include
+OIIO_LIB        = -L../oiio/lib
+# EMBREE 2.8
+EMBREE_INCLUDE  = -I/usr/local/include
+EMBREE_LIB      = -L/usr/local/lib
+TBB_LIB         = -L/usr/lib
+
+CC              = gcc
+CXX             = g++
+INCLUDES        = $(EIGEN_INCLUDE) $(OIIO_INCLUDE) $(EMBREE_INCLUDE)
+CXXFLAGS        = -march=native -std=c++11 -Ofast -Wall -DSINGLE_PRECISION -DNDEBUG
+#CXXFLAGS        = -march=native -std=c++11 -Ofast -Wall -DSINGLE_PRECISION -g
+LIBDIRS         = $(OIIO_LIB) $(EMBREE_LIB) $(TBB_LIB)
+LIBS            = $(LIBDIRS) -lOpenImageIO -lembree -lz -lpthread -lboost_system -ldl -ltbb
+
+: foreach *.cpp |> $(CXX) $(CXXFLAGS) $(INCLUDES) -c %f -o %o |> objs/%B.o
+: objs/*.o |> $(CXX) $(CXXFLAGS) %f $(LIBS) -o %o |> bin/dpt
+# use below to chroot (for debug symbols)
+#: foreach *.cpp |> ^c^ $(CXX) $(CXXFLAGS) $(INCLUDES) -c %f -o %o |> objs/%B.o
+#: objs/*.o |> ^c^ $(CXX) $(CXXFLAGS) %f $(LIBS) -o %o |> bin/dpt
