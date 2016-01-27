@@ -17,7 +17,7 @@
  *  We implement a hybrid algorithm that combines Primary Sample Space MLT [Kelemen et al. 2002]
  *  and Multiplxed MLT (MMLT) [Hachisuka et al. 2014].  Specifically, the state of our Markov
  *  chain only represents one of the N^2 pairs connection as in MMLT.  During the "large
- *  step" mutations, instead of choosing the camera and light subpath lengthes a prior like in
+ *  step" mutations, instead of choosing the camera and light subpath lengthes a priori as in
  *  MMLT, we sample all pairs of connections, and probabilistically pick one based on their
  *  contributions (similar to Multiple-try Metropolis).  During the "small step" mutations,
  *  we fix the camera and light subpath lengthes of the state.
