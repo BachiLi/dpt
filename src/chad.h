@@ -11,6 +11,7 @@
 #include <fstream>
 #include <dlfcn.h>
 #include <cmath>
+#include <array>
 
 namespace chad {
 

@@ -56,7 +56,7 @@ struct TriangleMesh : public Shape {
     BBox GetBBox() const override {
         return bbox;
     }
-    bool IsMoving() const {
+    bool IsMoving() const override {
         return data->isMoving;
     }
 
