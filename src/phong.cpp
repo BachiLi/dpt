@@ -322,15 +322,16 @@ void SamplePhong(const bool adjoint,
     ADFloat factor = ret[3];
     cosWo = Dot(normal_, wo);
 
+    ret = CreateCondExprVec(4);
     BeginIf(Gt(KsWeight, Float(0.0)), ret);
     {
-        ADFloat alpha = fmax(Dot(Reflect(wi, normal_), wo), Float(0.0));
+        ADFloat alpha = Dot(R, wo);
         ADFloat weight = pow(alpha, exponent) * c_INVTWOPI;
-        ADFloat expoConst1 = (exponent + Float(1.0));
-        ADFloat expoConst2 = (exponent + Float(2.0));
         std::vector<CondExprCPtr> ret = CreateCondExprVec(4);
         BeginIf(Gt(weight, Float(1e-10)), ret);
         {
+            ADFloat expoConst1 = (exponent + Float(1.0));
+            ADFloat expoConst2 = (exponent + Float(2.0));
             ADVector3 specContrib = Ks * (expoConst2 * weight);
             ADFloat specPdf = KsWeight * expoConst1 * weight;
             SetCondOutput({specContrib[0], specContrib[1], specContrib[2], specPdf});
