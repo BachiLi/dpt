@@ -2,6 +2,7 @@
 
 #include "commondef.h"
 #include "quaternion.h"
+#include "transform.h"
 
 int GetAnimatedTransformSerializedSize();
 
@@ -71,10 +72,8 @@ ADMatrix4x4 ToMatrix4x4(const ADAnimatedTransform &transform);
 
 template <typename FloatType>
 TAnimatedTransform<FloatType> Invert(const TAnimatedTransform<FloatType> &transform) {
-    TAnimatedTransform<Float> ret;
+    TAnimatedTransform<FloatType> ret;
     ret.isMoving = transform.isMoving;
-    ret.translate[0] = -transform.translate[0];
-    ret.translate[1] = -transform.translate[1];
     ret.rotate[0] = TVector4<FloatType>(-transform.rotate[0][0],
                                         -transform.rotate[0][1],
                                         -transform.rotate[0][2],
@@ -83,5 +82,9 @@ TAnimatedTransform<FloatType> Invert(const TAnimatedTransform<FloatType> &transf
                                         -transform.rotate[1][1],
                                         -transform.rotate[1][2],
                                         transform.rotate[1][3]);
+    TMatrix4x4<FloatType> rot0 = ToMatrix4x4<FloatType>(ret.rotate[0]);
+    TMatrix4x4<FloatType> rot1 = ToMatrix4x4<FloatType>(ret.rotate[1]);
+    ret.translate[0] = -XformVector<FloatType>(rot0, transform.translate[0]);
+    ret.translate[1] = -XformVector<FloatType>(rot1, transform.translate[1]);
     return ret;
 }
