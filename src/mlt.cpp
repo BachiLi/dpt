@@ -262,7 +262,6 @@ Float LargeStep::Mutate(const MLTState &mltState,
     Clear(proposalState.path);
     if (scene->options->largeStepMultiplexed) {
         int length = lengthDist->SampleDiscrete(uniDist(rng), nullptr);
-        assert(length >= 3 && length <= 6);
         int lgtLength = scene->options->bidirectional
                             ? Clamp(int(uniDist(rng) * (length + 1)), 0, length)
                             : Clamp(int(uniDist(rng) * 2), 0, 1);
