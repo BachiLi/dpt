@@ -187,7 +187,7 @@ static Float MLTInit(const MLTState &mltState,
     std::vector<SubpathContrib> spContribs;
     for (int i = 0; i < (int)numChains; i++) {
         while (pos > cdf[cdfPos]) {
-            cdfPos = std::min(cdfPos + 1, mStates.size() - 1);
+            cdfPos = std::min(cdfPos + 1, int(mStates.size()) - 1);
         }
         initStates.push_back(MarkovState{true});
         MarkovState &state = initStates.back();
