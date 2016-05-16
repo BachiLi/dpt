@@ -187,7 +187,7 @@ static Float MLTInit(const MLTState &mltState,
     std::vector<SubpathContrib> spContribs;
     for (int i = 0; i < (int)numChains; i++) {
         while (pos > cdf[cdfPos]) {
-            cdfPos++;
+            cdfPos = std::min(cdfPos + 1, mStates.size() - 1);
         }
         initStates.push_back(MarkovState{true});
         MarkovState &state = initStates.back();
@@ -211,6 +211,7 @@ static Float MLTInit(const MLTState &mltState,
         ToSubpath(state.spContrib.camDepth, state.spContrib.lightDepth, state.path);
         state.gaussianInitialized = false;
         state.lensGaussianInitialized = false;
+        pos += interval;
     }
 
     Float invNumInitSamples = inverse(Float(numInitSamples));
