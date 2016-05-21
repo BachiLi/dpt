@@ -193,13 +193,14 @@ static Float MLTInit(const MLTState &mltState,
         MarkovState &state = initStates.back();
         spContribs.clear();
         Clear(state.path);
+        RNG rngCheckpoint = mStates[cdfPos - 1].rng;
         genPathFunc(scene,
                     Vector2i(-1, -1),
                     std::max(scene->options->minDepth, 3),
                     scene->options->maxDepth,
                     state.path,
                     spContribs,
-                    mStates[cdfPos - 1].rng);
+                    rngCheckpoint);
         state.scoreSum = Float(0.0);
         for (const auto &spContrib : spContribs) {
             state.scoreSum += spContrib.lsScore;
