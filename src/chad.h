@@ -1100,7 +1100,7 @@ inline ExpressionCPtr square(const ExpressionCPtr &expr) {
 inline ExpressionCPtr inverse(const ExpressionCPtr &expr) {
     if (expr->IsConstant()) {
         auto constVal = expr->GetConstantVal();
-        return Constant::Create(1.0 * constVal);
+        return Constant::Create(1.0 / constVal);
     }
     return Inverse::Create(expr);
 }
